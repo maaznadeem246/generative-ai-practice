@@ -14,18 +14,19 @@ class TravelMap:
     def __init__(self) -> None:
         self.mainLocation : locationType = {'name':'','lat':0,'lon':0}
         self.suggestLocations : suggestPlaces = []
-        
+       
 
-        self.fig = go.Figure(go.Scattermapbox(
+        self.fig = go.Figure(
+            go.Scattermapbox(
             # df=mapData,
             mode = "markers",
-           
+            # lat=lat, lon=lon, name=name,
             marker=dict(
                 color='red',
                 size=10,
-            
             ),
-            textposition = "bottom right"))
+            textposition = "bottom right")
+        )
 
 
         self.fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
@@ -37,14 +38,26 @@ class TravelMap:
         self.fig.show()
 
     def updateMap(self,mainLocation:locationType,suggestLocations:suggestPlaces)->None:
-        print('printing')
+        print('in function')
+        print(mainLocation)
+        print(suggestLocations)
         if mainLocation != None : self.mainLocation = mainLocation
         if suggestLocations != None : self.suggestLocations = suggestLocations
+
+        if bool(len(self.suggestLocations)) : self.suggestLocations.insert(0,mainLocation)
+        
+        print(self.mainLocation)
+        print(self.suggestLocations)
         lat = [sl['lat'] for sl in self.suggestLocations if "lat" in sl]
         lon = [sl['lon'] for sl in self.suggestLocations if "lon" in sl]
         name = [sl['name'] for sl in self.suggestLocations if 'name' in sl]
-        # print('test')
-        self.fig.update_layout( dict1=dict({'lat':lat,'lon':lon,'name':name}),
+        print('test')
+        print(lat)
+        print(lon)
+        print(name)
+        self.fig.update_traces(lat=lat,lon=lon,hovertext=name)
+
+        self.fig.update_layout( 
         mapbox = {
             'zoom':15,
             'accesstoken': MAPBOX_TOKEN,
