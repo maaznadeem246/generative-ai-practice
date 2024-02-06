@@ -14,13 +14,16 @@ class TravelMap:
     def __init__(self) -> None:
         self.mainLocation : locationType = {'name':'','lat':0,'lon':0}
         self.suggestLocations : suggestPlaces = []
-       
+        lat = [sl['lat'] for sl in self.suggestLocations if "lat" in sl]
+        lon = [sl['lon'] for sl in self.suggestLocations if "lon" in sl]
+        name = [sl['name'] for sl in self.suggestLocations if 'name' in sl]
 
         self.fig = go.Figure(
             go.Scattermapbox(
-            # df=mapData,
             mode = "markers",
-            # lat=lat, lon=lon, name=name,
+            lat=lat,
+            lon=lon,
+            hovertext=name,
             marker=dict(
                 color='red',
                 size=10,
@@ -55,7 +58,7 @@ class TravelMap:
         print(lat)
         print(lon)
         print(name)
-        self.fig.update_traces(lat=lat,lon=lon,hovertext=name)
+        # self.fig.update_traces(lat=lat,lon=lon,hovertext=name)
 
         self.fig.update_layout( 
         mapbox = {
